@@ -58,6 +58,17 @@ function showConnectionWarning() {
 
 // Setup default data in Firebase
 function setupDefaultData() {
+    // Setup admin PIN (default: 9999)
+    const adminRef = database.ref('admin');
+    adminRef.once('value', (snapshot) => {
+        if (!snapshot.exists()) {
+            adminRef.set({
+                pin: '9999',
+                email: 'admin@contest.local'
+            });
+        }
+    });
+
     // Setup default judge PINs (all set to 1234 for easy testing)
     const judgesRef = database.ref('judges');
     judgesRef.once('value', (snapshot) => {
@@ -99,6 +110,11 @@ function showJudgeLogin() {
     document.getElementById('judge-login').classList.remove('hidden');
 }
 
+function showAdminLogin() {
+    hideAllScreens();
+    document.getElementById('admin-login').classList.remove('hidden');
+}
+
 function showAdmin() {
     hideAllScreens();
     document.getElementById('admin-panel').classList.remove('hidden');
@@ -114,6 +130,7 @@ function showPublicDisplay() {
 function hideAllScreens() {
     document.getElementById('role-selection').classList.add('hidden');
     document.getElementById('judge-login').classList.add('hidden');
+    document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('judge-panel').classList.add('hidden');
     document.getElementById('admin-panel').classList.add('hidden');
     document.getElementById('public-display').classList.add('hidden');
@@ -171,6 +188,42 @@ function judgeLogin() {
         
         // Show judge panel
         showJudgePanel();
+    });
+}
+
+// Admin Login
+function adminLogin() {
+    const pinInput = document.getElementById('admin-pin');
+    const pin = pinInput.value;
+    
+    if (!pin || pin.length !== 4) {
+        alert('Please enter a 4-digit PIN');
+        return;
+    }
+    
+    // Validate PIN contains only digits
+    if (!/^\d{4}$/.test(pin)) {
+        alert('PIN must be exactly 4 digits (0-9)');
+        return;
+    }
+    
+    // Verify admin PIN
+    database.ref('admin').once('value', (snapshot) => {
+        const admin = snapshot.val();
+        
+        if (!admin) {
+            alert('Admin not configured. Default PIN is: 9999');
+            return;
+        }
+        
+        if (admin.pin !== pin) {
+            alert('Invalid admin PIN');
+            return;
+        }
+        
+        // Login successful
+        pinInput.value = '';
+        showAdmin();
     });
 }
 
@@ -367,7 +420,157 @@ function logout() {
 
 // Admin Panel Functions
 function loadAdminData() {
+    loadJudgeList();
     loadAdminContestants();
+}
+
+function loadJudgeList() {
+    const judgeList = document.getElementById('judge-list');
+    judgeList.innerHTML = '<div class="loading">Loading judges...</div>';
+    
+    database.ref('judges').on('value', (snapshot) => {
+        const judges = snapshot.val();
+        
+        if (!judges) {
+            judgeList.innerHTML = '<p>No judges configured</p>';
+            return;
+        }
+        
+        judgeList.innerHTML = '';
+        
+        // Sort by judge number
+        const sortedJudges = Object.entries(judges).sort((a, b) => {
+            const numA = parseInt(a[0].replace('judge', ''));
+            const numB = parseInt(b[0].replace('judge', ''));
+            return numA - numB;
+        });
+        
+        sortedJudges.forEach(([judgeId, judge]) => {
+            const judgeItem = document.createElement('div');
+            judgeItem.className = 'judge-item';
+            
+            const statusClass = judge.active ? 'active' : 'inactive';
+            const statusText = judge.active ? 'Active' : 'Inactive';
+            
+            judgeItem.innerHTML = `
+                <div class="judge-info">
+                    <strong>${judge.name}</strong>
+                    <span class="judge-status ${statusClass}">${statusText}</span>
+                </div>
+                <div class="judge-actions">
+                    <button onclick="editJudgePIN('${judgeId}', '${judge.name}')">Change PIN</button>
+                    <button onclick="toggleJudgeStatus('${judgeId}', ${!judge.active})">${judge.active ? 'Deactivate' : 'Activate'}</button>
+                    <button onclick="deleteJudge('${judgeId}')" class="danger-btn-small">Delete</button>
+                </div>
+            `;
+            
+            judgeList.appendChild(judgeItem);
+        });
+    });
+}
+
+function addNewJudge() {
+    const nameInput = document.getElementById('new-judge-name');
+    const numberInput = document.getElementById('new-judge-number');
+    const pinInput = document.getElementById('new-judge-pin');
+    const activeCheckbox = document.getElementById('new-judge-active');
+    
+    const name = nameInput.value.trim();
+    const number = parseInt(numberInput.value);
+    const pin = pinInput.value;
+    const active = activeCheckbox.checked;
+    
+    if (!name) {
+        alert('Please enter judge name');
+        return;
+    }
+    
+    if (!number || number < 1 || number > 20) {
+        alert('Please enter a valid judge number (1-20)');
+        return;
+    }
+    
+    if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+        alert('Please enter a valid 4-digit PIN');
+        return;
+    }
+    
+    const judgeId = `judge${number}`;
+    
+    // Check if judge already exists
+    database.ref(`judges/${judgeId}`).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+            if (!confirm(`Judge ${number} already exists. Do you want to overwrite?`)) {
+                return;
+            }
+        }
+        
+        // Add/update judge
+        database.ref(`judges/${judgeId}`).set({
+            name: name,
+            pin: pin,
+            active: active
+        })
+        .then(() => {
+            nameInput.value = '';
+            numberInput.value = '';
+            pinInput.value = '';
+            activeCheckbox.checked = true;
+            alert('Judge added successfully! ✅');
+        })
+        .catch((error) => {
+            console.error('Error adding judge:', error);
+            alert('Failed to add judge. Please try again.');
+        });
+    });
+}
+
+function editJudgePIN(judgeId, judgeName) {
+    const newPIN = prompt(`Enter new PIN for ${judgeName} (4 digits):`);
+    
+    if (!newPIN) {
+        return; // User cancelled
+    }
+    
+    if (newPIN.length !== 4 || !/^\d{4}$/.test(newPIN)) {
+        alert('PIN must be exactly 4 digits (0-9)');
+        return;
+    }
+    
+    database.ref(`judges/${judgeId}/pin`).set(newPIN)
+        .then(() => {
+            alert('PIN updated successfully! ✅');
+        })
+        .catch((error) => {
+            console.error('Error updating PIN:', error);
+            alert('Failed to update PIN. Please try again.');
+        });
+}
+
+function toggleJudgeStatus(judgeId, newStatus) {
+    database.ref(`judges/${judgeId}/active`).set(newStatus)
+        .then(() => {
+            alert(`Judge ${newStatus ? 'activated' : 'deactivated'} successfully! ✅`);
+        })
+        .catch((error) => {
+            console.error('Error updating judge status:', error);
+            alert('Failed to update judge status. Please try again.');
+        });
+}
+
+function deleteJudge(judgeId) {
+    if (!confirm('Are you sure you want to delete this judge? This cannot be undone.')) {
+        return;
+    }
+    
+    database.ref(`judges/${judgeId}`).remove()
+        .then(() => {
+            alert('Judge deleted successfully! ✅');
+        })
+        .catch((error) => {
+            console.error('Error deleting judge:', error);
+            alert('Failed to delete judge. Please try again.');
+        });
 }
 
 function loadAdminContestants() {
