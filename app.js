@@ -440,8 +440,8 @@ function loadJudgeList() {
         
         // Sort by judge number
         const sortedJudges = Object.entries(judges).sort((a, b) => {
-            const numA = parseInt(a[0].replace('judge', ''));
-            const numB = parseInt(b[0].replace('judge', ''));
+            const numA = parseInt(a[0].replace('judge', '')) || 0;
+            const numB = parseInt(b[0].replace('judge', '')) || 0;
             return numA - numB;
         });
         
@@ -452,17 +452,42 @@ function loadJudgeList() {
             const statusClass = judge.active ? 'active' : 'inactive';
             const statusText = judge.active ? 'Active' : 'Inactive';
             
-            judgeItem.innerHTML = `
-                <div class="judge-info">
-                    <strong>${judge.name}</strong>
-                    <span class="judge-status ${statusClass}">${statusText}</span>
-                </div>
-                <div class="judge-actions">
-                    <button onclick="editJudgePIN('${judgeId}', '${judge.name}')">Change PIN</button>
-                    <button onclick="toggleJudgeStatus('${judgeId}', ${!judge.active})">${judge.active ? 'Deactivate' : 'Activate'}</button>
-                    <button onclick="deleteJudge('${judgeId}')" class="danger-btn-small">Delete</button>
-                </div>
-            `;
+            // Create elements safely to prevent XSS
+            const judgeInfo = document.createElement('div');
+            judgeInfo.className = 'judge-info';
+            
+            const judgeName = document.createElement('strong');
+            judgeName.textContent = judge.name; // Safe: uses textContent
+            
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `judge-status ${statusClass}`;
+            statusSpan.textContent = statusText;
+            
+            judgeInfo.appendChild(judgeName);
+            judgeInfo.appendChild(statusSpan);
+            
+            const judgeActions = document.createElement('div');
+            judgeActions.className = 'judge-actions';
+            
+            const changePinBtn = document.createElement('button');
+            changePinBtn.textContent = 'Change PIN';
+            changePinBtn.onclick = () => editJudgePIN(judgeId, judge.name);
+            
+            const toggleStatusBtn = document.createElement('button');
+            toggleStatusBtn.textContent = judge.active ? 'Deactivate' : 'Activate';
+            toggleStatusBtn.onclick = () => toggleJudgeStatus(judgeId, !judge.active);
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'danger-btn-small';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = () => deleteJudge(judgeId);
+            
+            judgeActions.appendChild(changePinBtn);
+            judgeActions.appendChild(toggleStatusBtn);
+            judgeActions.appendChild(deleteBtn);
+            
+            judgeItem.appendChild(judgeInfo);
+            judgeItem.appendChild(judgeActions);
             
             judgeList.appendChild(judgeItem);
         });
