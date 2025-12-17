@@ -19,7 +19,7 @@
                 <button class="role-btn judge-btn" onclick="showJudgeLogin()">
                     👨‍⚖️ Judge Login
                 </button>
-                <button class="role-btn admin-btn" onclick="showAdmin()">
+                <button class="role-btn admin-btn" onclick="showAdminLogin()">
                     ⚙️ Admin Panel
                 </button>
                 <button class="role-btn display-btn" onclick="showPublicDisplay()">
@@ -52,6 +52,16 @@
             </div>
         </div>
 
+        <div id="admin-login" class="hidden">
+            <h2>Admin Login</h2>
+            <div class="login-form">
+                <label for="admin-pin">Enter Admin PIN:</label>
+                <input type="password" id="admin-pin" placeholder="4-digit PIN" maxlength="4" pattern="[0-9]{4}">
+                <button onclick="adminLogin()">Login</button>
+                <button onclick="showRoleSelection()">Back</button>
+            </div>
+        </div>
+
         <div id="judge-panel" class="hidden">
             <div class="judge-header">
                 <h2 id="judge-name"></h2>
@@ -66,10 +76,21 @@
             <button onclick="showRoleSelection()" class="back-btn">Back</button>
             
             <div class="admin-section">
-                <h3>Judge PINs Setup</h3>
-                <div id="pin-setup">
-                    <p>Default PIN for all judges: <strong>1234</strong></p>
-                    <p class="note">Change PINs in Firebase Console for production use</p>
+                <h3>Manage Judges</h3>
+                <div class="admin-subsection">
+                    <h4>Add New Judge</h4>
+                    <input type="text" id="new-judge-name" placeholder="Judge Name">
+                    <input type="number" id="new-judge-number" placeholder="Judge Number" min="1" max="20">
+                    <input type="password" id="new-judge-pin" placeholder="4-digit PIN" maxlength="4" pattern="[0-9]{4}">
+                    <label>
+                        <input type="checkbox" id="new-judge-active" checked>
+                        Active
+                    </label>
+                    <button onclick="addNewJudge()">Add Judge</button>
+                </div>
+                <div class="admin-subsection">
+                    <h4>Current Judges</h4>
+                    <div id="judge-list"></div>
                 </div>
             </div>
 

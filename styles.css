@@ -106,7 +106,7 @@ header h1 {
 }
 
 /* Login Form */
-#judge-login {
+#judge-login, #admin-login {
     background: white;
     padding: 40px;
     border-radius: 15px;
@@ -115,7 +115,7 @@ header h1 {
     margin: 0 auto;
 }
 
-#judge-login h2 {
+#judge-login h2, #admin-login h2 {
     color: #333;
     margin-bottom: 30px;
     text-align: center;
@@ -578,4 +578,107 @@ header h1 {
     border-radius: 8px;
     margin-bottom: 20px;
     border: 1px solid #c3e6cb;
+}
+
+/* Judge Management Styles */
+.admin-subsection {
+    margin-bottom: 20px;
+}
+
+.admin-subsection h4 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.judge-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.judge-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.judge-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.judge-status.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.judge-status.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.judge-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.judge-actions button {
+    padding: 8px 16px;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.danger-btn-small {
+    background: #dc3545 !important;
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.danger-btn-small:hover {
+    background: #c82333 !important;
+}
+
+.admin-section label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.admin-section input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+/* Responsive for Judge Management */
+@media (max-width: 768px) {
+    .judge-item {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .judge-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .judge-actions button {
+        flex: 1;
+        min-width: 80px;
+    }
 }

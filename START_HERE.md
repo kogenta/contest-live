@@ -82,9 +82,11 @@ Click the green "Merge" button above to deploy to your main branch.
 
 ### For Admin:
 1. Select "Admin Panel"
-2. Add contestants with name and number
-3. View all contestants
-4. Reset scores if needed (careful!)
+2. Enter admin PIN (default: **9999**)
+3. Manage judges (add, edit PINs, activate/deactivate)
+4. Add contestants with name and number
+5. View all contestants
+6. Reset scores if needed (careful!)
 
 ### For Public Display:
 1. Select "Public Display"
@@ -123,10 +125,12 @@ Click the green "Merge" button above to deploy to your main branch.
 
 The default configuration uses:
 - Open database rules (for quick setup)
-- Default PIN 1234 for all judges
+- Default admin PIN: **9999**
+- Default judge PIN: **1234** for all judges
 
 **For production/important events:**
-- Change all judge PINs in Firebase Console
+- Change admin PIN from 9999
+- Change all judge PINs using Admin Panel or Firebase Console
 - Update database rules (see README.md)
 - Use secure WiFi network
 
