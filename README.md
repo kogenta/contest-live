@@ -102,10 +102,16 @@ const firebaseConfig = {
 ### For Admin
 
 1. Click **"⚙️ Admin Panel"**
-2. **Add Contestants**: Enter name and number
-3. **View All Contestants**: See and manage contestants
-4. **Reset Scores**: Clear all scores (use with caution!)
-5. **Judge PINs**: Default is 1234 for all judges
+2. **Login**: Enter admin PIN (default: **9999**)
+3. **Manage Judges**: 
+   - View all judges and their status
+   - Add new judges with custom PINs
+   - Change judge PINs
+   - Activate/deactivate judges
+   - Delete judges
+4. **Add Contestants**: Enter name and number
+5. **View All Contestants**: See and manage contestants
+6. **Reset Scores**: Clear all scores (use with caution!)
 
 ### For Public Display (Projector)
 
@@ -116,7 +122,21 @@ const firebaseConfig = {
 
 ## 🔧 Customization
 
-### Change Judge PINs
+### Change Admin PIN
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Navigate to **Realtime Database**
+3. Find `admin` → `pin`
+4. Click on the value and change from "9999" to your desired PIN
+
+### Manage Judges (Recommended Method)
+
+Use the Admin Panel interface (requires admin PIN):
+1. Login to Admin Panel with PIN (default: 9999)
+2. Navigate to "Manage Judges" section
+3. Add, edit, activate/deactivate, or delete judges as needed
+
+### Change Judge PINs (Manual Method)
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Navigate to **Realtime Database**
@@ -193,15 +213,20 @@ The current setup uses open database rules for simplicity. This is acceptable fo
 ### For Production Use, Implement:
 
 1. **Change Default PINs**
-   - Default PIN "1234" for all judges is insecure
-   - Go to Firebase Console → Realtime Database
-   - Update each judge's PIN to a unique value
-   - Or generate random PINs and securely distribute to judges
+   - **Admin PIN**: Change from default "9999" to a strong PIN
+   - **Judge PINs**: Change from default "1234" for all judges
+   - Use the Admin Panel to manage judge PINs easily
+   - Or go to Firebase Console → Realtime Database to update manually
+   - Generate random PINs and securely distribute to judges
 
 2. **Secure Firebase Rules**
    ```json
    {
      "rules": {
+       "admin": {
+         ".read": "auth != null",
+         ".write": false
+       },
        "contestants": {
          ".read": true,
          ".write": "auth != null"
@@ -237,6 +262,7 @@ The current setup uses open database rules for simplicity. This is acceptable fo
    - Provide option to export/delete data
 
 ### Quick Security Checklist for Event Day:
+- [ ] Changed admin PIN from "9999"
 - [ ] Changed all judge PINs from "1234"
 - [ ] Verified Firebase rules are published
 - [ ] Tested on trusted WiFi network
