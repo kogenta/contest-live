@@ -1,0 +1,581 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    background-attachment: fixed;
+}
+
+/* Animal theme patterns */
+body::before {
+    content: "🐾";
+    position: fixed;
+    font-size: 300px;
+    opacity: 0.05;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Role Selection */
+.role-section {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.role-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.role-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.role-btn {
+    padding: 20px;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    color: white;
+}
+
+.judge-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.admin-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.display-btn {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.role-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Login Form */
+#judge-login {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#judge-login h2 {
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-form label {
+    color: #555;
+    font-weight: bold;
+}
+
+.login-form input,
+.login-form select {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.login-form button {
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.login-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Judge Panel */
+#judge-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.judge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.judge-header h2 {
+    color: #333;
+}
+
+.logout-btn {
+    padding: 10px 20px;
+    background: #f5576c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.contestant-card {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #eee;
+}
+
+.contestant-card.scored {
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.contestant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contestant-info h3 {
+    color: #333;
+    font-size: 1.5em;
+}
+
+.contestant-number {
+    background: #667eea;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50%;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.criteria-scoring {
+    display: grid;
+    gap: 15px;
+}
+
+.criteria-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.criteria-item label {
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
+.score-value {
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.criteria-item input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+}
+
+.criteria-item input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+}
+
+.criteria-item input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+}
+
+.submit-score-btn {
+    margin-top: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.submit-score-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.submit-score-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.total-score {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #667eea;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+}
+
+/* Admin Panel */
+#admin-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#admin-panel h2 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.admin-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.admin-section h3 {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.admin-section input {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.admin-section button {
+    padding: 12px 24px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.admin-section button:hover {
+    background: #764ba2;
+}
+
+.back-btn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.danger-btn {
+    background: #dc3545 !important;
+}
+
+.danger-btn:hover {
+    background: #c82333 !important;
+}
+
+.note {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.contestant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.contestant-item button {
+    padding: 8px 16px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Public Display */
+#public-display {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 80vh;
+}
+
+.display-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+}
+
+.display-header h1 {
+    color: #333;
+    font-size: 3em;
+}
+
+.back-btn-display {
+    padding: 10px 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.ranking-item:nth-child(1) {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    transform: scale(1.05);
+}
+
+.ranking-item:nth-child(2) {
+    background: linear-gradient(135deg, #c0c0c0 0%, #d4d4d4 100%);
+}
+
+.ranking-item:nth-child(3) {
+    background: linear-gradient(135deg, #cd7f32 0%, #e8a87c 100%);
+}
+
+.rank-number {
+    font-size: 3em;
+    font-weight: bold;
+    color: #333;
+    min-width: 100px;
+    text-align: center;
+}
+
+.rank-medal {
+    font-size: 3em;
+    min-width: 100px;
+    text-align: center;
+}
+
+.rank-info {
+    flex: 1;
+    padding-left: 30px;
+}
+
+.rank-name {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.rank-details {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.rank-score {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #667eea;
+    min-width: 150px;
+    text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .subtitle {
+        font-size: 1em;
+    }
+
+    .role-btn {
+        font-size: 1.1em;
+        padding: 15px;
+    }
+
+    #judge-panel,
+    #admin-panel,
+    #public-display {
+        padding: 20px;
+    }
+
+    .contestant-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .display-header h1 {
+        font-size: 2em;
+    }
+
+    .ranking-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .rank-info {
+        padding-left: 0;
+        padding-top: 15px;
+    }
+
+    .rank-score {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .rank-number,
+    .rank-medal {
+        font-size: 2em;
+        min-width: auto;
+    }
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #667eea;
+    font-size: 1.2em;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
