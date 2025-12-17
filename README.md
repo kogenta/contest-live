@@ -181,12 +181,68 @@ Edit `styles.css` to modify colors, fonts, and styling.
 
 ## 🔒 Security Notes
 
-⚠️ **Important**: The current database rules allow anyone to read/write. For production use:
+⚠️ **IMPORTANT**: The default configuration is designed for quick testing and demo purposes.
 
-1. Implement Firebase Authentication
-2. Set proper security rules
-3. Use environment variables for sensitive config
-4. Change all judge PINs from default "1234"
+### For Testing/Demo Events:
+The current setup uses open database rules for simplicity. This is acceptable for:
+- Short-term events (1 day)
+- Trusted network environments
+- Non-sensitive data
+- Quick testing and demos
+
+### For Production Use, Implement:
+
+1. **Change Default PINs**
+   - Default PIN "1234" for all judges is insecure
+   - Go to Firebase Console → Realtime Database
+   - Update each judge's PIN to a unique value
+   - Or generate random PINs and securely distribute to judges
+
+2. **Secure Firebase Rules**
+   ```json
+   {
+     "rules": {
+       "contestants": {
+         ".read": true,
+         ".write": "auth != null"
+       },
+       "scores": {
+         ".read": true,
+         ".write": "auth != null"
+       },
+       "judges": {
+         ".read": "auth != null",
+         ".write": false
+       }
+     }
+   }
+   ```
+
+3. **Enable Firebase Authentication**
+   - Use Firebase Auth for judge login
+   - Replace PIN system with proper authentication
+   - Add email/password or OAuth providers
+
+4. **Additional Security**
+   - Use environment variables for Firebase config
+   - Enable Firebase App Check
+   - Monitor usage in Firebase Console
+   - Set up usage quotas and alerts
+   - Use HTTPS only (GitHub Pages does this automatically)
+
+5. **Data Privacy**
+   - Don't store personally identifiable information
+   - Comply with data protection regulations (GDPR, etc.)
+   - Have a data retention policy
+   - Provide option to export/delete data
+
+### Quick Security Checklist for Event Day:
+- [ ] Changed all judge PINs from "1234"
+- [ ] Verified Firebase rules are published
+- [ ] Tested on trusted WiFi network
+- [ ] Briefed judges not to share PINs
+- [ ] Have admin access to Firebase Console
+- [ ] Know how to reset in case of issues
 
 ## 💡 Tips
 

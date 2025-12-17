@@ -25,10 +25,35 @@ function checkFirebaseConnection() {
     connectedRef.on('value', (snap) => {
         if (snap.val() === true) {
             console.log('✅ Connected to Firebase');
+            // Remove any disconnection warnings
+            const existingWarning = document.getElementById('connection-warning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
         } else {
             console.log('❌ Disconnected from Firebase');
+            // Show warning to user
+            showConnectionWarning();
         }
     });
+}
+
+// Show connection warning
+function showConnectionWarning() {
+    const existingWarning = document.getElementById('connection-warning');
+    if (existingWarning) return; // Already showing
+    
+    const warning = document.createElement('div');
+    warning.id = 'connection-warning';
+    warning.className = 'error';
+    warning.style.position = 'fixed';
+    warning.style.top = '20px';
+    warning.style.left = '50%';
+    warning.style.transform = 'translateX(-50%)';
+    warning.style.zIndex = '10000';
+    warning.style.maxWidth = '500px';
+    warning.textContent = '⚠️ Connection lost! Scores may not sync. Please check your internet connection.';
+    document.body.appendChild(warning);
 }
 
 // Setup default data in Firebase
@@ -109,6 +134,12 @@ function judgeLogin() {
     
     if (!pin || pin.length !== 4) {
         alert('Please enter a 4-digit PIN');
+        return;
+    }
+    
+    // Validate PIN contains only digits
+    if (!/^\d{4}$/.test(pin)) {
+        alert('PIN must be exactly 4 digits (0-9)');
         return;
     }
     
@@ -322,7 +353,8 @@ function submitScore(contestantId) {
             alert('Score submitted successfully! ✅');
         })
         .catch((error) => {
-            alert('Error submitting score: ' + error.message);
+            console.error('Error submitting score:', error);
+            alert('Failed to submit score. Please check your internet connection and try again.');
         });
 }
 
@@ -385,28 +417,39 @@ function addContestant() {
         return;
     }
     
-    // Check if number already exists
-    database.ref('contestants').once('value', (snapshot) => {
-        const contestants = snapshot.val() || {};
-        
-        const numberExists = Object.values(contestants).some(c => c.number === number);
-        if (numberExists) {
-            alert('This contestant number already exists');
-            return;
+    // Use Firebase transaction to prevent race conditions
+    const newContestantRef = database.ref('contestants').push();
+    const contestantId = newContestantRef.key;
+    
+    database.ref('contestants').transaction((currentContestants) => {
+        if (currentContestants) {
+            // Check if number already exists
+            const numberExists = Object.values(currentContestants).some(c => c && c.number === number);
+            if (numberExists) {
+                // Abort transaction
+                return undefined;
+            }
         }
         
-        // Add contestant
-        const newContestantRef = database.ref('contestants').push();
-        newContestantRef.set({
-            name: name,
-            number: number
-        }).then(() => {
+        // Add new contestant
+        return {
+            ...(currentContestants || {}),
+            [contestantId]: {
+                name: name,
+                number: number
+            }
+        };
+    }, (error, committed, snapshot) => {
+        if (error) {
+            console.error('Transaction error:', error);
+            alert('Failed to add contestant. Please try again.');
+        } else if (!committed) {
+            alert('This contestant number already exists. Please choose a different number.');
+        } else {
             nameInput.value = '';
             numberInput.value = '';
             alert('Contestant added successfully! ✅');
-        }).catch((error) => {
-            alert('Error adding contestant: ' + error.message);
-        });
+        }
     });
 }
 

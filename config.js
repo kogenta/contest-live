@@ -7,13 +7,44 @@
 // 4. Click "Add app" or select Web app
 // 5. Copy the firebaseConfig object
 // 6. Enable Realtime Database in Firebase Console
-// 7. Set Realtime Database Rules to:
+// 7. Set Realtime Database Rules (IMPORTANT - READ BELOW!)
+
+// ⚠️ SECURITY WARNING - DATABASE RULES ⚠️
+// The rules below are for DEMO/TESTING ONLY and allow anyone to read/write data.
+// 
+// FOR TESTING/DEMO (Copy to Firebase Console > Realtime Database > Rules):
 //    {
 //      "rules": {
 //        ".read": true,
 //        ".write": true
 //      }
 //    }
+//
+// FOR PRODUCTION, use more secure rules like:
+//    {
+//      "rules": {
+//        "contestants": {
+//          ".read": true,
+//          ".write": "auth != null"
+//        },
+//        "scores": {
+//          ".read": true,
+//          ".write": "auth != null"
+//        },
+//        "judges": {
+//          ".read": "auth != null",
+//          ".write": false
+//        }
+//      }
+//    }
+//
+// Additional Production Security Steps:
+// 1. Enable Firebase Authentication
+// 2. Change all judge PINs from default "1234" 
+// 3. Use environment variables for sensitive config
+// 4. Enable App Check to prevent abuse
+// 5. Set up Firebase Security Rules properly
+// 6. Monitor usage in Firebase Console
 
 const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
