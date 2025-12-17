@@ -47,13 +47,13 @@
 // 6. Monitor usage in Firebase Console
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyB1sIAD13jSE59HPVhMZrVvSfwveBiBd3o",
+    authDomain: "animal-contest-vote.firebaseapp.com",
+    databaseURL: "https://animal-contest-vote-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "animal-contest-vote",
+    storageBucket: "animal-contest-vote.firebasestorage.app",
+    messagingSenderId: "794102781188",
+    appId: "1:794102781188:web:4b5fd4dda39b95e6d16c51"
 };
 
 // Initialize Firebase
