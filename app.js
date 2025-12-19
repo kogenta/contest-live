@@ -2,10 +2,18 @@
 
 // Scoring Criteria
 const CRITERIA = [
-  { id: "appearance", name: "Appearance / Costume", max: 10 },
-  { id: "creativity", name: "Creativity / Originality", max: 10 },
-  { id: "performance", name: "Performance / Presentation", max: 10 },
-  { id: "theme", name: "Theme Adherence (Animal)", max: 10 },
+  { id: "appearance", name: "ความสวยงาม (Costume Design)", max: 10 },
+  { id: "creativity", name: "ความคิดสร้างสรรค์ (Creativity)", max: 10 },
+  {
+    id: "performance",
+    name: "การนำเสนอ, การเลียนท่าทางหรือเสียงสัตว์ (Presentation)",
+    max: 10,
+  },
+  {
+    id: "theme",
+    name: "การแต่งตัวเข้ากับธีมงาน, ความเหมือนหรือสื่อถึงสัตว์ที่เลือก (Zoo Theme Adherence)",
+    max: 10,
+  },
 ];
 
 // Current user state
@@ -300,12 +308,13 @@ function createContestantCard(contestantId, contestant) {
     const criteriaItem = document.createElement("div");
     criteriaItem.className = "criteria-item";
 
-    const defaultValue = Math.floor(criteria.max / 2);
+    const defaultValue = 0;
+    // const defaultValue = Math.floor(criteria.max / 2);
     scores[criteria.id] = defaultValue;
 
     criteriaItem.innerHTML = `
             <label>
-                <span>${criteria.name}</span>
+                <span><strong></strong>${criteria.name}</strong></span>
                 <span class="score-value" id="score-${contestantId}-${criteria.id}">${defaultValue}/${criteria.max}</span>
             </label>
             <input type="range" 
