@@ -889,8 +889,32 @@ header h1 {
   #judge-panel,
   #admin-panel,
   #public-display {
-    padding: 20px;
+    padding: 16px;
     border-radius: 20px;
+  }
+
+  /* Tighten judge panel spacing on mobile */
+  .judge-header {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+  }
+
+  .contestant-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .criteria-scoring {
+    gap: 12px;
+  }
+
+  .criteria-item {
+    padding: 12px;
+  }
+
+  .total-score {
+    margin-top: 16px;
+    padding: 14px;
   }
 
   .contestant-header {
