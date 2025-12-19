@@ -398,9 +398,9 @@ header h1 {
     rgba(255, 192, 203, 0.3) 0%,
     rgba(173, 216, 230, 0.3) 100%
   );
-  padding: 25px;
+  padding: 16px;
   border-radius: 25px;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
   border: 3px solid rgba(255, 105, 180, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -425,7 +425,7 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .contestant-info h3 {
@@ -457,15 +457,15 @@ header h1 {
 
 .criteria-scoring {
   display: grid;
-  gap: 20px;
+  gap: 8px;
 }
 
 .criteria-item {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.8);
-  padding: 18px;
+  padding: 8px;
   border-radius: 15px;
   border-left: 5px solid #ff1493;
 }
@@ -557,7 +557,7 @@ header h1 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-align: center;
-  margin-top: 25px;
+  margin-top: 15px;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
@@ -889,32 +889,8 @@ header h1 {
   #judge-panel,
   #admin-panel,
   #public-display {
-    padding: 16px;
+    padding: 20px;
     border-radius: 20px;
-  }
-
-  /* Tighten judge panel spacing on mobile */
-  .judge-header {
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-  }
-
-  .contestant-card {
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
-  .criteria-scoring {
-    gap: 12px;
-  }
-
-  .criteria-item {
-    padding: 12px;
-  }
-
-  .total-score {
-    margin-top: 16px;
-    padding: 14px;
   }
 
   .contestant-header {
