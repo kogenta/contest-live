@@ -314,7 +314,7 @@ function createContestantCard(contestantId, contestant) {
 
     criteriaItem.innerHTML = `
             <label>
-                <span><strong></strong>${criteria.name}</strong></span>
+                <span><strong>${criteria.name}</strong></span>
                 <span class="score-value" id="score-${contestantId}-${criteria.id}">${defaultValue}/${criteria.max}</span>
             </label>
             <input type="range" 
